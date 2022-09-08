@@ -8,8 +8,7 @@ import datetime
 def get_csv_now():
     req = requests.get("https://www.kijiji.ca/b-apartments-condos/city-of-toronto/page-300/c37l1700273")
     max_page_finder = re.findall("page-([0-9]+)/", str(req.url))
-    max_number_pagination = int(max_page_finder[0])
-    # print(int(max_page[0]))
+    max_number_pagination = int(max_page_finder[0]) # get number of last page
 
     def collect_data(page_number):
         url = "https://www.kijiji.ca/b-apartments-condos/city-of-toronto/page-" + str(page_number) + "/c37l1700273"
@@ -34,6 +33,7 @@ def get_csv_now():
             description = card.find("div", class_="description").text.replace('\n', '').strip()
             price = card.find("div", class_="price").text.replace('\n', '').strip()
 
+            # Clear the data
             image_clear = ' '.join(image.split())
             title_clear = ' '.join(title.split())
             date_posted_clear = ' '.join(date_posted.split())
@@ -45,10 +45,10 @@ def get_csv_now():
             info_cleaned = [image_clear, title_clear, date_posted_clear, location_clear,
                                 bedrooms_clear, description_clear, price_clear]
             # print(info_cleaned)
-            thewriter.writerow(info_cleaned)
+            thewriter.writerow(info_cleaned) #write data to csv file
 
     pagination = 0
-    now = datetime.datetime.now()
+    now = datetime.datetime.now() #for creation unique file name
     with open("rs_data_" + str(now.strftime("%d-%m-%Y_%H-%M-%S")) + ".csv", "w", encoding="utf8", newline="") as f:
         thewriter = writer(f, delimiter =';')
         header = ["image_url", "title", "date_posted", "location", "bedrooms", "description", "price"]
@@ -56,7 +56,6 @@ def get_csv_now():
 
         for pagination in range(max_number_pagination):
             try:
-                # pagination += 1
                 collect_data(pagination)
                 print("NOW PAGE IS_ ", pagination, " out of ", max_number_pagination, "___ to csv")
             except KeyError as kerr:

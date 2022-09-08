@@ -15,8 +15,7 @@ def get_db_now():
 
     req = requests.get("https://www.kijiji.ca/b-apartments-condos/city-of-toronto/page-300/c37l1700273")
     max_page_finder = re.findall("page-([0-9]+)/", str(req.url))
-    max_number_pagination = int(max_page_finder[0])
-    print(int(max_page_finder[0]))
+    max_number_pagination = int(max_page_finder[0]) # get last page of site
 
     try:
         conn = psycopg2.connect(
@@ -85,20 +84,10 @@ def get_db_now():
                 conn.commit()
 
 
-        # pagination = 0
 
         for pagination in range(max_number_pagination):
-            # try:
-                # pagination += 1
                 collect_data(pagination)
                 print("NOW PAGE IS_ ", pagination, " out of ", max_number_pagination, "___ to pgsql db")
-            # except KeyError as kerr:
-            #     print(kerr)
-            #     continue
-            # except Exception as ex:
-            #     print(ex)
-            #     print("probably last page:", pagination)
-            #     break  # exit `while` loop
 
         conn.commit()
     except Exception as error:
