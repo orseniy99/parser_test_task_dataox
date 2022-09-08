@@ -5,9 +5,9 @@ import re
 
 def get_db_now():
     hostname = 'localhost'
-    database = 'dataox_parsing'
+    database = '' #enter your database
     username = 'postgres'
-    pwd = 'retxedd99GG'
+    pwd = '' #enter your password
     port_id = 5432
 
     conn = None
