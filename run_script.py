@@ -2,6 +2,7 @@ from db_collector import get_db_now
 from csv_collector import get_csv_now
 import time
 
+
 if __name__ == '__main__':
     start_time = time.time()
     while True:
@@ -31,6 +32,7 @@ if __name__ == '__main__':
             print("NO SUCH ANSWER. TRY ONE OF THIS: CSV | DB | BOTH")
             continue
 
-    end_time = time.time()
-    runtime = end_time - start_time
-    print(f'Program runtime is {round(runtime)} sec')
+    end = time.time()
+    hours, rem = divmod(end - start_time, 3600)
+    minutes, seconds = divmod(rem, 60)
+    print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours), int(minutes), seconds), "runtime")

@@ -4,6 +4,7 @@ import re
 from csv import writer
 import datetime
 
+data_inputs_counter = 0
 
 def get_csv_now():
     req = requests.get("https://www.kijiji.ca/b-apartments-condos/city-of-toronto/page-300/c37l1700273")
@@ -57,7 +58,7 @@ def get_csv_now():
         for pagination in range(max_number_pagination):
             try:
                 collect_data(pagination)
-                print("NOW PAGE IS_ ", pagination, " out of ", max_number_pagination, "___ to csv")
+                print(f"NOW PAGE IS_ {pagination} out of {max_number_pagination} ({round((pagination/max_number_pagination)*100, 2)}/100 %) ___ to csv")
             except KeyError as kerr:
                 print(kerr)
                 continue
@@ -65,3 +66,4 @@ def get_csv_now():
                 print(ex)
                 print("probably last page:", pagination)
                 break # exit `while` loop
+        print(data_inputs_counter)
